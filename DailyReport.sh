@@ -10,7 +10,12 @@
 # Get user info by parameter passing
 username=$1
 password=$2
-infohead=$3
+info=$3
+
+sub=%22*
+info=${info%${sub}}
+info=${info%${sub}}%22
+
 
 # Urlencode the password
 password=$(echo -n $password | xxd -p | tr -d '\n' | sed 's/\(..\)/%\1/g')
@@ -144,7 +149,7 @@ res=$(curl -s 'https://student.hitsz.edu.cn/xg_mobile/xsMrsbNew/save' \
   -H 'Referer: https://student.hitsz.edu.cn/xg_mobile/xsMrsbNew/index' \
   -H 'Accept-Language: zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6' \
   -H "Cookie: JSESSIONID=$jsessionid" \
-  --data-raw "${infohead}${token}%22%7D" \
+  --data-raw "${info}${token}%22%7D" \
   --compressed)
 time=$(date "+[%Y/%m/%d-%H:%M:%S]")
 echo "$time:$res"
